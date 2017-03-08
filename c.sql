@@ -19,6 +19,10 @@ CREATE TABLE Locations(
     constraint fk_id_route foreign key (id_route) references Routes(id_route)
 );
 
+CREATE TABLE Historic(
+	dates varchar(10),
+    hours varchar (10)
+);
 CREATE TABLE Vehicle(
 	id_vehicle integer(4),
     v_type varchar(20),
@@ -61,13 +65,18 @@ CREATE TABLE Clientt(
 
 CREATE TABLE Package(
 	id_package integer(4),
-    id_client integer(4),
-    weight integer(10),
+    id_cost integer(4),
+    init_date varchar (20),
+    constraint pk_pack primary key (id_package, id_cost),
+	constraint fk_id_cost foreign key (id_cost) references Cost(id_cost)
+);
+
+CREATE TABLE Cost(
+	weight integer(10),
     price integer(10),
     type_p varchar (40),
-    init_date varchar (20),
-    constraint pk_pack primary key (id_package, id_client),
-	constraint fk_id_client foreign key (id_client) references Clientt(id_client)
+    id_cost integer(4),
+    constraint pk_idcost primary key (id_cost)
 );
 
 CREATE TABLE goes_through(
