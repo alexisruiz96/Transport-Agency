@@ -201,29 +201,29 @@ INSERT INTO Cost (id_cost, weight,price, type_p) VALUES
 (5,200,300,'Caja');
 
 INSERT INTO PackageSendHas (id_package, id_client ,id_cost, adress) VALUES
-(),
-(),
-(),
-(),
-();
+(1,1,1,'Pollancre, 18'),
+(2,2,2,'Riera, 25'),
+(3,3,3,'Moscarola, 147'),
+(4,4,4,'Enric Morera, 12'),
+(5,5,5,'Tomas Bretón, 17');
 
 INSERT INTO GoesThrough (id_package, c_postal, ini_date) VALUES
-(),
-(),
-(),
-(),
-();
+(1,08480,'10:30 Lunes'),
+(2,21032,'16:45 Jueves'),
+(3,48239,'17:13 Martes'),
+(4,48239,'10:33 Viernes'),
+(5,09234,'12:15 Miercoles');
 
 INSERT INTO Statuss (id_status, description) VALUES
-(),
-(),
-(),
-(),
-();
+(1,'en camino'),
+(2,'enviado'),
+(3,'en camino'),
+(4,'a la espera'),
+(5,'recibido');
 
 INSERT INTO With_stat (id_status, id_package, fecha) VALUES
-(),
-(),
-(),
-(),
-();
+(1,1,'14/06'),
+(2,2,'24/12'),
+(3,3,'02/11'),
+(4,4,'30/08'),
+(5,5,'12/02');
