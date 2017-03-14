@@ -18,20 +18,6 @@ CREATE TABLE Locations(
     constraint fk_id_route foreign key (id_route) references Routes(id_route)
 );
 
-CREATE TABLE Historic(
-	ini_date varchar(20),
-	franja_hor varchar(10),
-    constraint pk_ini_date primary key (ini_date)
-    
-);
-
-CREATE TABLE LocHasHist(
-	c_postal integer(8),
-    ini_date varchar(20),
-    constraint pk_lochist primary key (c_postal, ini_date),
-    constraint fk_postal foreign key (c_postal) references Locations(c_postal),
-    constraint fk_date foreign key (ini_date) references Historic(ini_date)
-);
 CREATE TABLE Vehicle(
 	id_vehicle integer(4),
     v_type varchar(20),
@@ -39,16 +25,6 @@ CREATE TABLE Vehicle(
     cost integer(6),
     constraint pk_id_vehicle primary key (id_vehicle)
 );
-
-CREATE TABLE Used_in(
-	id_vehicle integer(4),
-    c_postal integer(8),
-    ini_date varchar(20),
-    constraint pk_used_in primary key (id_vehicle, c_postal, ini_date),
-    constraint fk1_id_vehicle foreign key (id_vehicle) references Vehicle(id_vehicle),
-    constraint fk2_c_postal foreign key (c_postal) references Locations(c_postal),
-    constraint fk3_ini_date foreign key (ini_date) references Historic(ini_date)
-    );
 
 CREATE TABLE Driver(
 	id_driver integer(4),
@@ -58,15 +34,19 @@ CREATE TABLE Driver(
     constraint pk_id_driver primary key (id_driver)
 );
 
-CREATE TABLE Driver_at(
-	id_driver integer(4),
-    c_postal integer(8),
+CREATE TABLE LocHasHist(
+	c_postal integer(8),
     ini_date varchar(20),
-    constraint pk_driver_at primary key (id_driver, c_postal, ini_date),
-    constraint fk1_id_driver foreign key (id_driver) references Driver(id_driver),
-    constraint fk2_c_postal2 foreign key (c_postal) references Locations(c_postal),
-	constraint fk3_ini_date2 foreign key (ini_date) references Historic(ini_date)
-    );
+    franja_hor varchar(10),
+    id_route integer(4),
+    id_vehicle integer(4),
+    id_driver integer(4),
+    constraint pk_lochist primary key (c_postal, ini_date, franja_hor, id_route),
+    constraint fk_postal foreign key (c_postal) references Locations(c_postal),
+    constraint fk_route foreign key (id_route) references Locations(id_route), #ROUTE OR LOCATIONS
+    constraint fk_veh foreign key (id_vehicle) references Vehicle(id_vehicle),
+    constraint fk_driver foreign key (id_driver) references Driver(id_driver)
+);
 
 CREATE TABLE Clientt(
 	id_client integer(4),
@@ -75,8 +55,6 @@ CREATE TABLE Clientt(
     email varchar(40),
 	constraint pk_id_client primary key (id_client)
 );
-
-
 
 CREATE TABLE Cost(
 	id_cost integer(4),
@@ -100,19 +78,18 @@ CREATE TABLE GoesThrough(
 	id_package integer(4),
     c_postal integer(8),
     ini_date varchar(20),
-    constraint pk_goes primary key (id_package, c_postal, ini_date),
-	constraint fk_c_postal3 foreign key (c_postal) references Locations(c_postal),
+    franja_hor varchar(10),
+    id_route integer(4),
+    constraint pk_goes primary key (id_package, c_postal, ini_date, franja_hor, id_route),
     constraint fk2_package foreign key (id_package) references PackageSendHas(id_package),
-    constraint fk3_ini_date3 foreign key (ini_date) references Historic(ini_date)
+    constraint fk2_ini_date foreign key (c_postal, ini_date, franja_hor, id_route) references LocHasHist(c_postal, ini_date, franja_hor, id_route),
+	constraint fk2_route foreign key (id_route) references Locations(id_route)
 );
-
-
 
 CREATE TABLE Statuss(
 	id_status integer(4),
     description varchar(15),
 	constraint pk_stat primary key (id_status)
-    
 );
 
 CREATE TABLE With_stat(
@@ -143,34 +120,12 @@ INSERT INTO Locations (c_postal, id_route, name_loc, time_stops) VALUES
 (48239,4,'Barcelona','10:33'),
 (48239,5,'Barcelona','17:13');
 
-INSERT INTO Historic (ini_date, franja_hor) VALUES
-('10:30 Lunes','Mañana'),
-('16:45 Jueves','Tarde'),
-('17:13 Martes','Tarde'),
-('10:33 Viernes','Mañana'),
-('12:15 Miercoles','Mañana');
-
-INSERT INTO LocHasHist (c_postal, ini_date) VALUES
-(08480,'10:30 Lunes'),
-(21032,'16:45 Jueves'),
-(48239,'17:13 Martes'),
-(48239,'10:33 Viernes'),
-(09234,'12:15 Miercoles');
-
 INSERT INTO Vehicle (id_vehicle, v_type, size, cost) VALUES
 (1,'Turisme', 'Medio', 300),
 (2,'Moto','Bajo',250),
 (3,'Furgoneta','Grande', 450),
 (4,'Camión','Enorme',600),
 (5,'Furgoneta','Grande',450);
-
-
-INSERT INTO Used_in (id_vehicle, c_postal, ini_date) VALUES
-(1,08480,'10:30 Lunes'),
-(2,21032,'16:45 Jueves'),
-(3,48239,'17:13 Martes'),
-(4,48239,'10:33 Viernes'),
-(5,09234,'12:15 Miercoles');
 
 INSERT INTO Driver (id_driver, dni, ssn, telf) VALUES
 (1,'934536339G','23526',938432913),
@@ -179,12 +134,13 @@ INSERT INTO Driver (id_driver, dni, ssn, telf) VALUES
 (4,'231414192F','20103',629304019),
 (5,'059382394G','42819',934812394);
 
-INSERT INTO Driver_at (id_driver, c_postal, ini_date) VALUES
-(1,08480,'10:30 Lunes'),
-(2,21032,'16:45 Jueves'),
-(3,48239,'17:13 Martes'),
-(4,48239,'10:33 Viernes'),
-(5,09234,'12:15 Miercoles');
+INSERT INTO LocHasHist (c_postal, ini_date, franja_hor, id_route, id_vehicle, id_driver) VALUES
+(08480,'28/06/2017','Mañana',1,1,1),
+(21032,'02/07/2017','Tarde',2,2,2),
+(48239,'23/06/2017','Tarde',3,3,3),
+(48239,'14/04/2017','Mañana',4,4,4),
+(09234,'18/05/2017','Tarde',5,5,5);
+
 
 INSERT INTO Clientt (id_client, name_c, telf, email) VALUES
 (1,'Apple',923182392,'apple@gmail.com'),
@@ -207,12 +163,12 @@ INSERT INTO PackageSendHas (id_package, id_client ,id_cost, adress) VALUES
 (4,4,4,'Enric Morera, 12'),
 (5,5,5,'Tomas Bretón, 17');
 
-INSERT INTO GoesThrough (id_package, c_postal, ini_date) VALUES
-(1,08480,'10:30 Lunes'),
-(2,21032,'16:45 Jueves'),
-(3,48239,'17:13 Martes'),
-(4,48239,'10:33 Viernes'),
-(5,09234,'12:15 Miercoles');
+INSERT INTO GoesThrough (id_package, c_postal, ini_date, franja_hor, id_route) VALUES
+(1,08480,'28/06/2017','Mañana',1),
+(2,21032,'02/07/2017','Tarde',2),
+(3,48239,'23/06/2017','Tarde',3),
+(4,48239,'14/04/2017','Mañana',4),
+(5,09234,'18/05/2017','Tarde',5);
 
 INSERT INTO Statuss (id_status, description) VALUES
 (1,'en camino'),
