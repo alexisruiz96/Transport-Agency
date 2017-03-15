@@ -1,4 +1,4 @@
-DROP DATABASE transportagency;
+#DROP DATABASE transportagency;
 CREATE DATABASE TransportAgency;
 
 USE TransportAgency;
