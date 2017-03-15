@@ -1,3 +1,4 @@
+DROP DATABASE transportagency;
 CREATE DATABASE TransportAgency;
 
 USE TransportAgency;
@@ -21,7 +22,7 @@ CREATE TABLE Locations(
 CREATE TABLE Vehicle(
 	id_vehicle integer(4),
     v_type varchar(20),
-    size varchar(10),
+    size integer(4),
     cost integer(6),
     constraint pk_id_vehicle primary key (id_vehicle)
 );
@@ -121,11 +122,11 @@ INSERT INTO Locations (c_postal, id_route, name_loc, time_stops) VALUES
 (48239,5,'Barcelona','17:13');
 
 INSERT INTO Vehicle (id_vehicle, v_type, size, cost) VALUES
-(1,'Turisme', 'Medio', 300),
-(2,'Moto','Bajo',250),
-(3,'Furgoneta','Grande', 450),
-(4,'Camión','Enorme',600),
-(5,'Furgoneta','Grande',450);
+(1,'Turisme', 350, 300),
+(2,'Moto',250,250),
+(3,'Furgoneta',500, 450),
+(4,'Camión',1500,600),
+(5,'Furgoneta',500,450);
 
 INSERT INTO Driver (id_driver, dni, ssn, telf) VALUES
 (1,'934536339G','23526',938432913),
@@ -137,8 +138,8 @@ INSERT INTO Driver (id_driver, dni, ssn, telf) VALUES
 INSERT INTO LocHasHist (c_postal, ini_date, franja_hor, id_route, id_vehicle, id_driver) VALUES
 (08480,'28/06/2017','Mañana',1,1,1),
 (21032,'02/07/2017','Tarde',2,2,2),
-(48239,'23/06/2017','Tarde',3,3,3),
-(48239,'14/04/2017','Mañana',4,4,4),
+(48239,'23/06/2017','Tarde',1,1,2),
+(21032,'14/04/2017','Mañana',1,1,3),
 (09234,'18/05/2017','Tarde',5,5,5);
 
 
@@ -166,8 +167,8 @@ INSERT INTO PackageSendHas (id_package, id_client ,id_cost, adress) VALUES
 INSERT INTO GoesThrough (id_package, c_postal, ini_date, franja_hor, id_route) VALUES
 (1,08480,'28/06/2017','Mañana',1),
 (2,21032,'02/07/2017','Tarde',2),
-(3,48239,'23/06/2017','Tarde',3),
-(4,48239,'14/04/2017','Mañana',4),
+(1,48239,'23/06/2017','Tarde',1),
+(1,21032,'14/04/2017','Mañana',1),
 (5,09234,'18/05/2017','Tarde',5);
 
 INSERT INTO Statuss (id_status, description) VALUES
@@ -183,3 +184,5 @@ INSERT INTO With_stat (id_status, id_package, fecha) VALUES
 (3,3,'02/11'),
 (4,4,'30/08'),
 (5,5,'12/02');
+
+
