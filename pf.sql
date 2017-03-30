@@ -1,6 +1,9 @@
-DROP PROCEDURE getPckStops;
-DROP PROCEDURE getPcksCarriedInAStop;
-DROP PROCEDURE getPckinVehAndStop;
+#PROCEDURES
+
+DROP PROCEDURE IF EXISTS getPckStops;
+DROP PROCEDURE IF EXISTS getPcksCarriedInAStop;
+DROP PROCEDURE IF EXISTS getPckinVehAndStop;
+DROP FUNCTION IF EXISTS WeightOnStop;
 
 DELIMITER /
 
@@ -59,3 +62,42 @@ END/
 DELIMITER //;
 
 call getPckinVehAndStop(1,08480);
+
+#FUNCTION
+
+#In one specific stop return what weight is being carried. 
+
+DELIMITER $$
+
+
+CREATE FUNCTION WeightOnStop(c_postal integer(8)) RETURNS INTEGER(8)
+
+    DETERMINISTIC
+
+BEGIN
+
+    DECLARE sumw integer(8);
+    
+	SELECT sum(weight)
+    INTO sumw
+    FROM Cost
+    WHERE weight IN (SELECT DISTINCT C.weight
+	FROM Cost C, GoesThrough G, Locations L, PackageSendHas PH
+	WHERE G.c_postal = L.c_postal
+    AND G.id_package = PH.id_package
+	AND PH.id_cost = C.id_cost
+    AND G.c_postal = c_postal);
+    
+    
+ RETURN (sumw);
+
+
+END$$
+
+DELIMITER ;
+
+
+select WeightOnStop(21032);
+
+
+

@@ -1,4 +1,4 @@
-DROP DATABASE transportagency;
+#DROP DATABASE transportagency;
 CREATE DATABASE TransportAgency;
 
 USE TransportAgency;
@@ -120,8 +120,8 @@ INSERT INTO Locations (c_postal, id_route, name_loc, time_stops) VALUES
 (48239,2,'Barcelona','15:56'),
 (48239,4,'Barcelona','10:33'),
 (48239,5,'Barcelona','17:13'),
-(21032,2,'Reus','17:45');
-(09234,5,'Toledo','08:15'),
+(21032,2,'Reus','17:45'),
+(09234,5,'Toledo','08:15');
 
 INSERT INTO Vehicle (id_vehicle, v_type, size, cost) VALUES
 (1,'Turisme', 350, 300),
