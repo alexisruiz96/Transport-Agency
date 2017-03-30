@@ -1,4 +1,4 @@
-#DROP DATABASE transportagency;
+DROP DATABASE transportagency;
 CREATE DATABASE TransportAgency;
 
 USE TransportAgency;
@@ -113,13 +113,15 @@ INSERT INTO Routes (id_route, origin, destination) VALUES
 (5,'Valencia','Barcelona');
 
 INSERT INTO Locations (c_postal, id_route, name_loc, time_stops) VALUES
-(08480,2,'Vallés', '10:30'),
+(08480,1,'Vallés', '10:30'),
 (09234,3,'Toledo','12:15'),
-(21032,5,'Reus','16:45'),
+(21032,1,'Reus','16:45'),
 (48239,1,'Barcelona','13:23'),
 (48239,2,'Barcelona','15:56'),
 (48239,4,'Barcelona','10:33'),
-(48239,5,'Barcelona','17:13');
+(48239,5,'Barcelona','17:13'),
+(21032,2,'Reus','17:45');
+(09234,5,'Toledo','08:15'),
 
 INSERT INTO Vehicle (id_vehicle, v_type, size, cost) VALUES
 (1,'Turisme', 350, 300),
@@ -172,9 +174,9 @@ INSERT INTO GoesThrough (id_package, c_postal, ini_date, franja_hor, id_route) V
 (5,09234,'18/05/2017','Tarde',5);
 
 INSERT INTO Statuss (id_status, description) VALUES
-(1,'en camino'),
+(1,'In process'),
 (2,'enviado'),
-(3,'en camino'),
+(3,'In process'),
 (4,'a la espera'),
 (5,'recibido');
 
